@@ -9,15 +9,15 @@ const int crushSensor = 2;
 char val; // Data received from the serial port
 
 void setup(){
-pinMode(legBuzzer, OUTPUT); // Set buzzer - pin 9 as an output
+pinMode(pedalBuzzer, OUTPUT); // Set buzzer - pin 9 as an output
 pinMode(snareBuzzer, OUTPUT);
 Serial.begin(9600); // Start serial communication at 9600 bps
 }
 
 void loop(){
-  pS = analogRead(pedalSensor);
-  sS = analogRead(snareSensor);
-  aS = analogRead(crushSensor);
+//  pS = analogRead(pedalSensor);
+  //sS = analogRead(snareSensor);
+  //aS = analogRead(crushSensor);
   //we need to send which sensor was used and the pressure that it was used (sensorName,pressure)
   
  if (Serial.available()) 
@@ -32,7 +32,8 @@ void loop(){
           tone(pedalBuzzer, 4000);  // Stop sound...
           delay(500);
        }  noTone(crushBuzzer);  
-          else if (val == '2') {
+
+   }else if (val == '3') {
           tone(crushBuzzer, 4000);  // Stop sound...
           delay(500);
           noTone(crushBuzzer);     
@@ -42,4 +43,3 @@ void loop(){
            noTone(crushBuzzer);  
         }
    }
-}
