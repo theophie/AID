@@ -9,6 +9,7 @@ void setup()
   String portName = Serial.list()[0]; //change the 0 to a 1 or 2 etc. to match your port
   myPort = new Serial(this, portName, 9600);
  notes = loadStrings("data/notes.txt");
+ tempo = loadStrings("data/tempo.txt");
 }
 
 void draw() {
@@ -18,15 +19,15 @@ void draw() {
    if (key == '1') {
       println("Start"); 
       readNotes();
-    }   
+    } 
   }
 }
   
 void readNotes(){
    for (int i = 0 ; i < notes.length; i++) {
-   myPort.write(notes[i]);
-   
    println(notes[i]);
-   delay(2000); //this will be the tempo? 
+   println(tempo[i]);
+   myPort.write(notes[i]);
+   delay(int(tempo[i])); //this will be the tempo? 
  }
 }
