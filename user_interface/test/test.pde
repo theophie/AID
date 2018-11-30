@@ -12,14 +12,8 @@ int el1 = 50;//Defining where in the y axis the ellipse 1 will start
 int el2 = 50; //Defining where in the y axis the ellipse 2 will start
 int el3 = 50; //Defining where in the y axis the ellipse 3 will start
 int ySpeedMed = 2; //How fast/many pixels on the y axis the ellipse will move 
-int ySpeedSlow = 3; 
-int ySpeedFast = 4; 
-
-boolean keyHit;
-
-int[] notesOk = {-1,-1,-1};
-int[] notesMissed = {-1,-1,-1};
-
+int ySpeedSlow = 1; 
+int ySpeedFast = 3; 
 
 // =========================== setup =============================================
 void setup(){
@@ -45,7 +39,6 @@ void draw(){
   // Mode 1: Play the game
   else if (mode == 1) {
     game(); 
-    
   }
   // Mode 2: Game over
   else if (mode == 2) {
@@ -77,7 +70,7 @@ void game() {
   text("Score: "+points, 570, 60); // Score of player
   text("Lives: "+lives, 570, 75); // Lives of player
   textSize(18);
-   
+  
   fill(turquoise);  
   noStroke();
   ellipse(200, el1, 50, 50); // Ellipse for snare
@@ -98,7 +91,7 @@ void game() {
         el3 = 50;
     }
   
-  stroke (green);
+  stroke (255);
   strokeWeight (8);
   line(0,515,700,515);
   
@@ -108,27 +101,8 @@ void game() {
   
   if (lives == 0) {
       mode = 2;
-  } 
-  
-  for(int i=0; i<3; i++) {  //an array for images
-   if(notesOk[i] > 0) {
-       if(i==0) image(correct, 200, 570, 80, 80); 
-       if(i==1) image(correct, 350, 570, 80, 80); 
-       if(i==2) image(correct, 500, 570, 80, 80); 
-       notesOk[i]--;
-       if(notesOk[i] == 0) notesOk[i] = -1;
-    }
   }
-  
-  for(int i=0; i<3; i++) {
-   if(notesMissed[i] > 0) {
-       if(i==0) image(cross, 200, 570, 80, 80); 
-       if(i==1) image(cross, 350, 570, 80, 80); 
-       if(i==2) image(cross, 500, 570, 80, 80); 
-       notesMissed[i]--;
-       if(notesMissed[i] == 0) notesMissed[i] = -1;
-    }
-  }
+    
 }
 
 // =========================== gameOver =================================================
@@ -154,6 +128,8 @@ void error() {
 void mouseReleased() {
   if (mode == 0) {
     mode = 1; // switching to game
+  }
+  else if (mode == 1) {  //handling clicks in game
   } 
   else if (mode == 2) {
     mode = 0; //switching to intro
@@ -162,34 +138,17 @@ void mouseReleased() {
     mode = 0; //switching to intro
   }
 }
-// =========================== keyPressed ===================================================
 
 void keyPressed() {
-  if ((keyCode == LEFT) && (el1 > 465) && (el1<560)) { //Left arrow key pressed and hit the ellipse at the white line
-    points = points + 100;
-    notesOk[0] = 20;
-  } 
-  else if ((keyCode == UP) && (el2 > 465) && (el2<560)) {
-    points = points + 100;
-    notesOk[1] = 20;
+  if (key == CODED) { //checking if the key is coded
+    if ((keyCode == LEFT) && (el1 > 465) && (el1<565)) {
+      points = points + 100;
+      image(correct, 200, 570, 80, 80);
+    } 
+    
+    else if (keyCode == DOWN) {
+
+    } 
+  } else {
   }
-  else if ((keyCode == RIGHT) && (el3 > 465) && (el3<560)) {
-    points = points + 100;
-    notesOk[2] = 20;
-  }
-  else {
-      lives = lives -1;
-      if ((keyCode == LEFT) && (el1 < 465) || (el1 > 565)) {
-        notesMissed[0] = 20; //20 Frames per second, array item 0 (i=0)
-      }
-      if ((keyCode == UP) && (el2 < 465) || (el2 > 565)) {
-        notesMissed[1] = 20; 
-      }
-      if ((keyCode == RIGHT) && (el3 < 465) || (el3 > 565)) {
-        notesMissed[2] = 20; 
-      }
-  } 
 }
-    
-    
-    
