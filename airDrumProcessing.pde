@@ -3,6 +3,7 @@ String notes[];
 String tempo[];
 Serial myPort;  // Create object from Serial class
 String val;
+int instr;
 void setup() 
 {
   size(200,200); 
@@ -13,7 +14,21 @@ void setup()
 }
 
 void draw() {
-   
+   if ( myPort.available() > 0) 
+      {  // If data is available,
+        instr = myPort.read();    
+      } 
+      
+      if (instr==51){
+        //value = 3
+         println("hiHat");
+      }else if (instr==50){
+        //value = 2
+       println("Pedal");
+     }else if (instr==49){
+       //value = 1
+       println("Snare");
+     }
 
    if (keyPressed == true) 
   {                           
@@ -33,6 +48,6 @@ void readNotes(){
      myPort.write(list[0]);
      myPort.write(list[1]);
      myPort.write(list[2]);
-     delay(int(tempo[i]));
+     delay(10000);
    }
 }
