@@ -15,11 +15,19 @@ int ySpeedMed = 2; //How fast/many pixels on the y axis the ellipse will move
 int ySpeedSlow = 3; 
 int ySpeedFast = 4; 
 
-boolean keyHit;
-
 int[] notesOk = {-1,-1,-1};
 int[] notesMissed = {-1,-1,-1};
 
+//Copied from airDrumProcessing
+import processing.serial.*;
+String notes[];
+String tempo[];
+Serial myPort;  // Create object from Serial class
+String val;
+int instr;
+int hiHat_hit = 51; //value = 3
+int pedal_hit = 50; //value = 2
+int snare_hit = 49; // value = 1
 
 // =========================== setup =============================================
 void setup(){
@@ -33,6 +41,11 @@ void setup(){
   bass = loadImage("bass.png");
   correct = loadImage("correct.png");
   cross = loadImage("cross.png");
+  //Copied from airDrumProcessing
+  String portName = Serial.list()[0]; 
+  myPort = new Serial(this, portName, 9600);
+   notes = loadStrings("data/notes.txt");
+   tempo = loadStrings("data/tempo.txt");
 }
 
 // =========================== draw ==============================================
@@ -72,6 +85,32 @@ void introScreen() {
 
 void game() {
   
+  if ( myPort.available() > 0) {  // If data is available,
+        instr = myPort.read();    
+      } 
+      
+      if (instr==hiHat_hit){
+        //value = 3
+         println("hiHat"); 
+       }
+         
+      else if (instr==pedal_hit){
+        //value = 2
+       println("Pedal");
+       }
+       
+       else if (instr==snare_hit){
+       //value = 1
+       println("Snare");
+       }
+
+   if (keyPressed == true) {                           
+     if (key == '1') {
+        println("Start");   
+        readNotes();
+    } 
+  }
+   
   background(bg);
   
   text("Score: "+points, 570, 60); // Score of player
@@ -130,6 +169,20 @@ void game() {
     }
   }
 }
+// =========================== readNotes =================================================
+
+ void readNotes(){
+   for (int i = 0 ; i < notes.length; i++) {
+     String notesLine= notes[i];    
+     String[] list = split(notesLine, ',');
+     println(notesLine);
+     myPort.write('a');
+     myPort.write(list[0]);
+     myPort.write(list[1]);
+     myPort.write(list[2]);
+     delay(10000);
+   }
+}
 
 // =========================== gameOver =================================================
 
@@ -165,15 +218,15 @@ void mouseReleased() {
 // =========================== keyPressed ===================================================
 
 void keyPressed() {
-  if ((keyCode == LEFT) && (el1 > 465) && (el1<560)) { //Left arrow key pressed and hit the ellipse at the white line
+  if (((keyCode == LEFT)||(instr==snare_hit)) && (el1 > 465) && (el1<560)) { //Left arrow key pressed and hit the ellipse at the white line
     points = points + 100;
     notesOk[0] = 20;
   } 
-  else if ((keyCode == UP) && (el2 > 465) && (el2<560)) {
+  else if (((keyCode == UP)||(instr==hiHat_hit)) && (el2 > 465) && (el2<560)) {
     points = points + 100;
     notesOk[1] = 20;
   }
-  else if ((keyCode == RIGHT) && (el3 > 465) && (el3<560)) {
+  else if (((keyCode == RIGHT||(instr==pedal_hit))) && (el3 > 465) && (el3<560)) {
     points = points + 100;
     notesOk[2] = 20;
   }
