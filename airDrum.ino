@@ -1,46 +1,46 @@
-const int pedalBuzzer = 13; //buzzer to arduino pin 13
+const int bassBuzzer = 13; //buzzer to arduino pin 13
 const int snareBuzzer = 12; //buzzer to arduino pin 12
 const int hiHatBuzzer = 11; //buzzer to arduino pin 11
 
-const int pedalSensor = A0;
+const int bassSensor = A0;
 const int snareSensor = A1;
 const int hiHatSensor = A2;
 
 const int threshold = 300;
 
-int pS = 0;
+int bS = 0;
 int sS = 0;
 int hS= 0;
 
 int snareTimer = -1;
-int pedalTimer = -1;
+int bassTimer = -1;
 int hihatTimer = -1;
 
 int snareSTimer = -1;
-int pedalSTimer = -1;
+int bassSTimer = -1;
 int hihatSTimer = -1;  
 
 void setup(){
-pinMode(pedalBuzzer, OUTPUT); // Set buzzer as an output
+pinMode(bassBuzzer, OUTPUT); // Set buzzer as an output
 pinMode(snareBuzzer, OUTPUT);
 pinMode(hiHatBuzzer, OUTPUT);
 
-pinMode(pedalBuzzer, INPUT); // Set Piezo as an input
+pinMode(bassSensor, INPUT); // Set Piezo as an input
 pinMode(snareSensor, INPUT);
 pinMode(hiHatSensor, INPUT);
 
-Serial.begin(9600); // Start serial communication at 9600 bps
+Serial.begin(9600); // Start serial communication at 9600 bbS
 }
 
 void loop(){
  sendHit();
-  pS = analogRead(pedalSensor);
+  bS = analogRead(bassSensor);
   sS = analogRead(snareSensor);
   hS = analogRead(hiHatSensor);
-//l1 - snare, l2 - pedal, l3 - hihat
+//l1 - snare, l2 - bass, l3 - hihat
 
   char snare = 0;
-  char pedal = 0;
+  char bass = 0;
   char hihat = 0;
 
   if (Serial.available()) { 
@@ -48,22 +48,23 @@ void loop(){
      if(aChar == 'a') { 
         delay(5);
         snare = Serial.read()-48;
-        pedal = Serial.read()-48;
+        bass = Serial.read()-48;
         hihat = Serial.read()-48;
 
         if (snare==1 && snareTimer == -1){
-          snareTimer = 200;
-          tone(snareBuzzer, 2000); // Send 4KHz sound signal...
+          digitalWrite(snareBuzzer,HIGH);
+          snareTimer = 300;        
         }
 
-        if (pedal==1 && pedalTimer == -1){
-          pedalTimer = 200;
-          tone(pedalBuzzer, 2000); // Send 4KHz sound signal...
+       
+        if (bass==1 && bassTimer == -1){
+          digitalWrite(bassBuzzer,HIGH);
+          bassTimer = 300;          
         }
 
         if (hihat==1 && hihatTimer == -1){
-          hihatTimer = 200;
-          tone(hiHatBuzzer, 2000); // Send 4KHz sound signal...
+          digitalWrite(hiHatBuzzer,HIGH);
+          hihatTimer = 300;
         }
 
      }      
@@ -77,11 +78,11 @@ void loop(){
      }
    } 
 
-   if(pedalTimer > 0) {
-     pedalTimer--;
-     if(pedalTimer == 0) { 
-       noTone(pedalBuzzer); 
-       pedalTimer = -1; 
+   if(bassTimer > 0) {
+     bassTimer--;
+     if(bassTimer == 0) { 
+       noTone(bassBuzzer); 
+       bassTimer = -1; 
      }
    } 
 
@@ -97,47 +98,45 @@ void loop(){
        
  
 
-
-int sendCounter=-1;
+int sSTimer = -1;
+int bSTimer = -1;
+int hSTimer = -1;
 
 void sendHit(){
-if (sS >= threshold){
-   Serial.println(1);
-   }
-
-   if (pS >= threshold){
-   Serial.println(2);
-   }
-
-   if (hS >= threshold){
-   Serial.println(3);
-   }
   
-//int instr [3]={0,0,0};
+  if (sS >= threshold && sSTimer == -1){
+    sSTimer = 300;
+    Serial.println(1);
+    }
 
-//if (sendCounter=-1){
-//  if (sS >= threshold){
-//    instr[0] = 1;
-//    sendCounter=1;
-//    }
-//
-//   if (pS >= threshold){
-//    instr[1] = 1;
-//    sendCounter=1;
-//    }
-//
-//    if (hS >= threshold){
-//    instr[2] = 1;
-//    sendCounter=1;
-//    }
-//  }
-//
-//  if (sendCounter=1){
-//   Serial.println("a");
-//   Serial.println(instr[0]);
-//   Serial.println(instr[1]);
-//   Serial.println(instr[2]);
-//   sendCounter=-1; 
-//  }
+   if (bS >= threshold && bSTimer == -1){
+    bSTimer = 300;
+     Serial.println(2);
+    }
+
+    if (hS >= threshold && hSTimer == -1){
+    hSTimer = 300;
+      Serial.println(3);
+    }
+
+    if(sSTimer > 0) {
+      sSTimer--;
+      if(sSTimer == 0) { 
+        sSTimer = -1; 
+      }
+    }
+
+    if(bSTimer > 0) {
+      bSTimer--;
+      if(bSTimer == 0) { 
+        bSTimer = -1; 
+      }
+    }
+
+    if(hSTimer > 0) {
+      hSTimer--;
+      if(hSTimer == 0) { 
+        hSTimer = -1; 
+      }
+    }
 } 
-  
