@@ -1,6 +1,6 @@
 // =========================== variables =========================================
 PImage bg, snare, hihat, bass, correct, cross;
-int mode, points;
+int mode, points, scorePercentage;
 color turquoise = #639FAB;
 color light_blue = #1C5D99;
 color grey = #BBCDE5;
@@ -15,6 +15,7 @@ int ySpeed = 4; //How fast/many pixels on the y axis the ellipse will move
 
 int[] notesOk = {-1,-1,-1}; //making an array, -1 since they are not active in the beginning
 int[] notesMissed = {-1,-1,-1};
+
 
 //Copied from airDrumProcessing
 import processing.serial.*;
@@ -104,6 +105,8 @@ void introScreen() {
   textSize(50);
   text("Start game", 230, 350);
   points = 0;
+  notesTimer = 0;
+  notesLineIndex = 0;
 }
 
 // ============================= game =====================================================
@@ -175,6 +178,10 @@ void game() {
     }
   }
   
+  if  (notesLineIndex == notes.length) { //end the game when you reach array line 8
+     mode = 2;
+   }
+  
 }
 // =========================== readNotes =================================================
 
@@ -204,9 +211,13 @@ void game() {
 void gameOver() {
   background(bg);
   fill(255);
+  noStroke();
+  rectMode(CENTER);  // display rectangle in center
+  rect(350, 280, 420, 200);
+  fill(0);
   textSize(50);
-  text("Game Over!", 150, 250);
-  text("Your Highscore:"+points, 150, 350);
+  text("Your Highscore:", 150, 250);
+  text(""+points, 300, 350);
 }
 
 // =========================== error ===================================================
@@ -223,6 +234,9 @@ void mouseReleased() {
   if (mode == 0) {
     mode = 1; // switching to game
   } 
+  else if (mode == 1) {
+    mode = 2; //swith to game over
+  }
   else if (mode == 2) {
     mode = 0; //switching to intro
   }
