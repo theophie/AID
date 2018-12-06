@@ -1,0 +1,23 @@
+#N canvas 36 197 709 473 16;
+#X obj 107 182 line~;
+#X obj 258 263 snapshot~;
+#X floatatom 261 298 8 0 0 0 - - -, f 8;
+#X obj 278 189 metro 50;
+#X obj 278 132 loadbang;
+#X obj 61 327 outlet~;
+#X obj 36 9 inlet;
+#X msg 108 142 0 \, 88200 2000;
+#X obj 199 109 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X msg 46 149 0;
+#X obj 41 259 tabread~ \$1;
+#X connect 0 0 1 0;
+#X connect 0 0 10 0;
+#X connect 1 0 2 0;
+#X connect 3 0 1 0;
+#X connect 4 0 3 0;
+#X connect 6 0 7 0;
+#X connect 7 0 0 0;
+#X connect 8 0 7 0;
+#X connect 9 0 0 0;
+#X connect 10 0 5 0;
