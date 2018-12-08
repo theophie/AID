@@ -32,7 +32,6 @@ int hiHat_hit = 51; //value = 3
 int pedal_hit = 50; //value = 2
 int snare_hit = 49; // value = 1
 
-
 int notesTimer = 0;
 int notesLineIndex = 0;
 String notesLine;    
@@ -45,6 +44,7 @@ void setup(){
   bg.resize(700, 700);  
   mode = 0;
   
+
   //load Images
   drumkit = loadImage("drumkit.png");
   snare = loadImage("snare.png");
@@ -55,7 +55,7 @@ void setup(){
   party = loadImage("party.png");
   
   //Copied from airDrumProcessing
-  String portName = Serial.list()[4];  //Rachit computer = 5, Emily = 0, Mila = 4
+  String portName = Serial.list()[0];  //Rachit computer = 5, Emily = 0, Mila = 4
   myPort = new Serial(this, portName, 9600);
   notes = loadStrings("notes.txt");
   tempo = loadStrings("tempo.txt");
@@ -81,6 +81,7 @@ void draw(){
   else if (mode == 1) {
     readPort();
     game(); 
+    buzzers();
     notesHit();
   }
   // Mode 2: Game over
@@ -131,14 +132,8 @@ void readPort(){
    if (Integer.parseInt(list[0]) == 1) el1 = 0;
    if (Integer.parseInt(list[1]) == 1) el2 = 0;
    if (Integer.parseInt(list[2]) == 1) el3 = 0;
-   
-   notesBuzz= bnotes[i];    
-   String[] blist = split(notesBuzz, ',');
-   myPort.write('a'); //create a starting point for array
-   myPort.write(blist[0]);
-   myPort.write(blist[1]);
-   myPort.write(blist[2]);
 }
+
 
 // =========================== error ===================================================
 
@@ -163,6 +158,30 @@ void mouseReleased() {
   else {
     mode = 0; //switching to intro
   }
+}
+
+// =========================== buzzers ===================================================
+
+void buzzers(){
+    
+int [] buzzers = {0,0,0};
+
+  if ((el1 > 430) && (el1<520)) { //Defining the area to buzz
+    buzzers[0] = 1;
+  }
+  
+  if ((el2 > 430) && (el2<520)) { //Defining the area to buzz
+     buzzers[1] = 1;
+  }
+  
+  if ((el3 > 430) && (el3<520)) { //Defining the area to buzz
+     buzzers[2] = 1;
+   } 
+  
+    myPort.write('a'); //create a starting point for array
+    myPort.write(buzzers[0]);
+    myPort.write(buzzers[1]);
+    myPort.write(buzzers[2]);
 }
 
 // =========================== notesHit ===================================================
