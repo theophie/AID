@@ -23,19 +23,20 @@ void drawCircles() {
  }
 
 
-void game() {
+void game(int diff) {
   
   background(bg);
   
   fill(255);
   text("Score: "+points, 630, 60); // Score of player
   textSize(18);
-   
+  image(back, 10, 40, 140, 40);
+  
   fill(turquoise);  
   noStroke();
-  if(notesTimer % 65 == 0) readNotes(); 
+  if(notesTimer % diff == 0) readNotes(); 
   notesTimer++;
-  
+
   drawCircles();
    
   stroke (green);
@@ -68,7 +69,7 @@ void game() {
   }
   
    if  (notesLineIndex == notes.length) { //end the game when you reach end of length array
-     mode = 2;
+     mode = 4;
    }
   
 }
