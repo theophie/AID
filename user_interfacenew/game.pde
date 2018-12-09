@@ -27,8 +27,9 @@ void game(int diff) {
   
   background(bg);
   
+  int points_rounded = round(points);
   fill(255);
-  text("Score: "+points, 630, 60); // Score of player
+  text("Score: "+points_rounded, 630, 60); // Score of player
   textSize(18);
   image(back, 10, 40, 140, 40);
   
@@ -71,5 +72,4 @@ void game(int diff) {
    if  (notesLineIndex == notes.length) { //end the game when you reach end of length array
      mode = 4;
    }
-  
 }

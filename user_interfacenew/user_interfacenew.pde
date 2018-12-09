@@ -1,6 +1,8 @@
 // =========================== variables =========================================
 PImage bg, snare, hihat, bass, correct, cross, drumkit, party, startImg, back;
-int mode, points;
+int mode;
+float points;
+int points_rounded;
 color turquoise = #639FAB;
 color light_blue = #1C5D99;
 color grey = #BBCDE5;
@@ -36,6 +38,8 @@ int notesTimer = 0;
 int notesLineIndex = 0;
 String notesLine;    
 String notesBuzz;  
+float finalscore ; //to calculate end score with percentage
+int finalscore_rounded;
 
 // =========================== setup =============================================
 void setup(){
@@ -154,9 +158,6 @@ void readPort(){
    if (Integer.parseInt(list[0]) == 1) el1 = 0;
    if (Integer.parseInt(list[1]) == 1) el2 = 0;
    if (Integer.parseInt(list[2]) == 1) el3 = 0;
-   
-   
-   
 }
 
 
