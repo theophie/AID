@@ -1,5 +1,5 @@
 // =========================== variables =========================================
-PImage bg, snare, hihat, bass, correct, cross, drumkit, party;
+PImage bg, snare, hihat, bass, correct, cross, drumkit, party, startImg, back;
 int mode, points;
 color turquoise = #639FAB;
 color light_blue = #1C5D99;
@@ -53,13 +53,13 @@ void setup(){
   correct = loadImage("correct.png");
   cross = loadImage("cross.png");
   party = loadImage("party.png");
+  startImg = loadImage("start.png");
+  back = loadImage("back.png");
   
   //Copied from airDrumProcessing
   String portName = Serial.list()[0];  //Rachit computer = 5, Emily = 0, Mila = 4
   myPort = new Serial(this, portName, 9600);
-  notes = loadStrings("notes.txt");
-  tempo = loadStrings("tempo.txt");
-  bnotes = loadStrings("bnotes.txt");
+
   oscP5 = new OscP5(this,1234);
   myRemoteLocation = new NetAddress("127.0.0.1",1234);
   sendMsgInt("/play",1);
@@ -77,15 +77,37 @@ void draw(){
   if (mode == 0) { 
     introScreen(); 
   }
-  // Mode 1: Play the game
+  // Mode 1-3: Play the game
   else if (mode == 1) {
+    //easygame
+    notes = loadStrings("notesE.txt");
+    ySpeed= 6;
     readPort();
-    game(); 
+    game(85); 
+    buzzers();
+    notesHit();
+  }
+   else if (mode == 2) {
+     //medium difficulty
+    notes = loadStrings("notesM.txt");
+    ySpeed=8;
+    readPort();
+    game(65); 
+    buzzers();
+    notesHit();
+  }
+   else if (mode == 3) {
+     //difficult game
+    notes = loadStrings("notesH.txt");
+    ySpeed=10;
+    readPort();
+    game(50);
     buzzers();
     notesHit();
   }
   // Mode 2: Game over
-  else if (mode == 2) {
+  else if (mode == 4) {
+    //end game
     gameOver();    
   }  
   // Error
@@ -124,14 +146,17 @@ void readPort(){
    int i = notesLineIndex;
    if(notesLineIndex < notes.length) {
      notesLineIndex++;
-   }
-   else return;
+   } else return;
+   
    notesLine= notes[i];    
    String[] list = split(notesLine, ',');
    
    if (Integer.parseInt(list[0]) == 1) el1 = 0;
    if (Integer.parseInt(list[1]) == 1) el2 = 0;
    if (Integer.parseInt(list[2]) == 1) el3 = 0;
+   
+   
+   
 }
 
 
@@ -143,38 +168,21 @@ void error() {
   text("Error"+mode, 350, 350);
 }
 
-// =========================== mouseReleased ===================================================
-  
-void mouseReleased() {
-  if (mode == 0) {
-    mode = 1; // switching to game
-  } 
-  else if (mode == 1) {
-    mode = 2; //switching to gameOver
-  }
-  else if (mode == 2) {
-    mode = 0; //switching to intro
-  }
-  else {
-    mode = 0; //switching to intro
-  }
-}
-
 // =========================== buzzers ===================================================
 
 void buzzers(){
     
 int [] buzzers = {0,0,0};
 
-  if ((el1 > 430) && (el1<520)) { //Defining the area to buzz
+  if ((el1 > 430) && (el1<520)) { //Defining the area where a hit would be successful
     buzzers[0] = 1;
   }
   
-  if ((el2 > 430) && (el2<520)) { //Defining the area to buzz
+  if ((el2 > 430) && (el2<520)) { //Defining the area where a hit would be successful
      buzzers[1] = 1;
   }
   
-  if ((el3 > 430) && (el3<520)) { //Defining the area to buzz
+  if ((el3 > 430) && (el3<520)) { //Defining the area where a hit would be successful
      buzzers[2] = 1;
    } 
   
@@ -215,6 +223,29 @@ void notesHit() { //with Piezo sensors
 // =========================== keyPressed ===================================================
 
 void keyPressed() {
+  //allow the game mode to change in the correct screen
+  if (mode == 0){
+       if (key=='1'){
+        mode = 1; //easy mode
+      }else if( key=='2'){
+        mode = 2; //medium mode
+      }else if (key=='3'){
+        mode = 3; }//difficult mode
+  }
+  
+  if (mode==1 || mode==2 || mode==3){
+    if (key==BACKSPACE){
+      mode= 4; //switching to gameover
+    }
+  }
+  
+  if (mode == 4){
+    if (key==ENTER || key==RETURN){
+    mode= 0; //switching to intro
+    }
+  }
+  
+  //game
   if ((keyCode == LEFT) && (el1 > 465) && (el1<560)) { //Defining the area where a key press would be successful
     points = points + 100;
     notesOk[0] = 20; //frames per second, how long the picture will stay
@@ -239,6 +270,4 @@ void keyPressed() {
       }
   } 
 }
-    
-    
     
