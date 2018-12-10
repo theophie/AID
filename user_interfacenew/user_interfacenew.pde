@@ -155,9 +155,9 @@ void readPort(){
    notesLine= notes[i];    
    String[] list = split(notesLine, ',');
    
-   if (Integer.parseInt(list[0]) == 1) el1 = 0;
-   if (Integer.parseInt(list[1]) == 1) el2 = 0;
-   if (Integer.parseInt(list[2]) == 1) el3 = 0;
+   if (Integer.parseInt(list[0]) == 1) el1 = 0; else el1=0;
+   if (Integer.parseInt(list[1]) == 1) el2 = 0; else el2=0;
+   if (Integer.parseInt(list[2]) == 1) el3 = 0; else el3=0;
 }
 
 
@@ -234,12 +234,6 @@ void keyPressed() {
         mode = 3; }//difficult mode
   }
   
-  if (mode==1 || mode==2 || mode==3){
-    if (key==BACKSPACE){
-      mode= 4; //switching to gameover
-    }
-  }
-  
   if (mode == 4){
     if (key==ENTER || key==RETURN){
     mode= 0; //switching to intro
@@ -247,28 +241,36 @@ void keyPressed() {
   }
   
   //game
-  if ((keyCode == LEFT) && (el1 > 465) && (el1<560)) { //Defining the area where a key press would be successful
-    points = points + 100;
-    notesOk[0] = 20; //frames per second, how long the picture will stay
-  } 
-  else if ((keyCode == UP) && (el2 > 465) && (el2<560)) {
-    points = points + 100;
-    notesOk[1] = 20;
-  }
-  else if ((keyCode == RIGHT) && (el3 > 465) && (el3<560)) {
-    points = points + 100;
-    notesOk[2] = 20;
-  }
-  else {
-      if ((keyCode == LEFT) && ((el1 < 465) || (el1 > 560))) {
-        notesMissed[0] = 20; //20 Frames per second, array item 0 (i=0)
-      }
-      if ((keyCode == UP) && ((el2 < 465) || (el2 > 560))) {
-        notesMissed[1] = 20; 
-      }
-      if ((keyCode == RIGHT) && ((el3 < 465) || (el3 > 560))) {
-        notesMissed[2] = 20; 
-      }
-  } 
-}
+  if (mode==1 || mode==2 || mode==3){
+    if (key==BACKSPACE){
+      mode= 4; //switching to gameover
+    }
     
+     if ((keyCode == LEFT) && (el1 > 465) && (el1<560)) { //Defining the area where a key press would be successful
+        points = points + 100;
+        notesOk[0] = 20; //frames per second, how long the picture will stay
+      } 
+      else if ((keyCode == UP) && (el2 > 465) && (el2<560)) {
+        points = points + 100;
+        notesOk[1] = 20;
+      }
+      else if ((keyCode == RIGHT) && (el3 > 465) && (el3<560)) {
+        points = points + 100;
+        notesOk[2] = 20;
+      }
+      else {
+          if ((keyCode == LEFT) && ((el1 < 465) || (el1 > 560))) {
+            notesMissed[0] = 20; //20 Frames per second, array item 0 (i=0)
+          }
+          if ((keyCode == UP) && ((el2 < 465) || (el2 > 560))) {
+            notesMissed[1] = 20; 
+          }
+          if ((keyCode == RIGHT) && ((el3 < 465) || (el3 > 560))) {
+            notesMissed[2] = 20; 
+          }
+      } 
+    
+  }
+ 
+}
+
