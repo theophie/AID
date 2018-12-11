@@ -13,7 +13,7 @@ void gameOver() {
   text(points_rounded+" Points", 350, 350);
   image(party, 420, 330, 200, 200);
   int finalscore_rounded = round(finalscore);
-  finalscore = (points/2200)*100; //2200 is the maximum score you can get currently
+  finalscore = (points/1500)*100; //1500 is the maximum score you can get currently in normal/medium mode
   text(finalscore_rounded+" %", 350, 450);
   
   text("Enter your name:"+ username , 350, 650);
