@@ -1,6 +1,7 @@
 // =========================== variables =========================================
 PImage bg, snare, hihat, bass, correct, cross, drumkit, party, startImg, back;
 int mode;
+int modeConstant;
 float points;
 int points_rounded;
 color turquoise = #639FAB;
@@ -14,7 +15,9 @@ int el1 = 50;//Defining where in the y axis the ellipse 1 (for snare) will start
 int el2 = 50; //Defining where in the y axis the ellipse 2 /for bass) will start
 int el3 = 50; //Defining where in the y axis the ellipse 3 (for hi-hat) will start
 int ySpeed = 8; //How fast/many pixels on the y axis the ellipse will move 
-
+//int loopCount=0;
+String username="";
+  
 int[] notesOk = {-1,-1,-1}; //making an array, -1 since they are not active in the beginning
 int[] notesMissed = {-1,-1,-1};
 
@@ -80,6 +83,7 @@ void draw(){
   //Mode 0: Intro
   if (mode == 0) { 
     introScreen(); 
+    //loopCount=0;
   }
   // Mode 1-3: Play the game
   else if (mode == 1) {
@@ -112,7 +116,8 @@ void draw(){
   // Mode 2: Game over
   else if (mode == 4) {
     //end game
-    gameOver();    
+    gameOver();  
+    
   }  
   // Error
   else { 
@@ -227,21 +232,30 @@ void keyPressed() {
   //allow the game mode to change in the correct screen
   if (mode == 0){
        if (key=='1'){
-        mode = 1; //easy mode
+         modeConstant =1;
+        mode = 1; //easy mode        
       }else if( key=='2'){
-        mode = 2; //medium mode
+        modeConstant =2;
+        mode = 2; //medium mode         
       }else if (key=='3'){
-        mode = 3; }//difficult mode
+        modeConstant =3;
+        mode = 3; }//difficult mode         
   }
   
   if (mode == 4){
     if (key==ENTER || key==RETURN){
+    highscore(points_rounded);
     mode= 0; //switching to intro
+    }else{ 
+      if (username==null || username.length()<3){
+        username +=key;
+      }
     }
   }
   
   //game
   if (mode==1 || mode==2 || mode==3){
+    username="";
     if (key==BACKSPACE){
       mode= 4; //switching to gameover
     }
@@ -269,8 +283,6 @@ void keyPressed() {
             notesMissed[2] = 20; 
           }
       } 
-    
   }
- 
 }
-
+    
