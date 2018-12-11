@@ -47,9 +47,9 @@ void loop(){
      char aChar = Serial.read();
      if(aChar == 'a') { 
         delay(5);
-        snare = Serial.read()-48;
-        bass = Serial.read()-48;
-        hihat = Serial.read()-48;
+        snare = Serial.read();
+        bass = Serial.read();
+        hihat = Serial.read();
 
         if (snare==1 && snareTimer == -1){
           digitalWrite(snareBuzzer,HIGH);
