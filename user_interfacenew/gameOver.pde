@@ -6,16 +6,18 @@ void gameOver() {
   noStroke();
   rectMode(CENTER);  // display rectangle in center
   rect(350, 350, 420, 350);
-  fill(turquoise);
   textSize(50);
   points_rounded = round(points);
+  fill(orange);
   text("Your Highscore:", 350, 250);
+  fill(0);
   text(points_rounded+" Points", 350, 350);
   image(party, 420, 330, 200, 200);
   int finalscore_rounded = round(finalscore);
   finalscore = (points/1500)*100; //1500 is the maximum score you can get currently in normal/medium mode
   text(finalscore_rounded+" %", 350, 450);
-  
+  fill(orange);
+  textSize(40);
   text("Enter your name:"+ username , 350, 650);
 
 }
