@@ -17,10 +17,14 @@ int el3 = 50; //Defining where in the y axis the ellipse 3 (for hi-hat) will sta
 int ySpeed = 8; //How fast/many pixels on the y axis the ellipse will move 
 //int loopCount=0;
 String username="";
+int noteCount=0;
+int highestScore=0;
+ 
   
 int[] notesOk = {-1,-1,-1}; //making an array, -1 since they are not active in the beginning
 int[] notesMissed = {-1,-1,-1};
 int hsCount =0;
+int hsLoop=0;
 
 //Copied from airDrumProcessing
 import processing.serial.*;
@@ -84,6 +88,8 @@ void draw(){
   if (mode == 0) { 
     introScreen(); 
      hsCount =0;
+     hsLoop=0;
+     noteCount=0;
   }
   // Mode 1-3: Play the game
   else if (mode == 1) {
@@ -124,8 +130,12 @@ void draw(){
   }  
   // Mode 5: HighScore Board
   else if (mode == 5) {
-    //end game       
-    highScoreBoard();    
+    //end game
+    if (hsLoop==0){
+         highScoreBoard(); 
+        hsLoop=1;
+    }
+    
   } 
   // Error
   else { 
@@ -168,9 +178,9 @@ void readPort(){
    notesLine= notes[i];    
    String[] list = split(notesLine, ',');
    
-   if (Integer.parseInt(list[0]) == 1) el1 = 0; else el1=0;
-   if (Integer.parseInt(list[1]) == 1) el2 = 0; else el2=0;
-   if (Integer.parseInt(list[2]) == 1) el3 = 0; else el3=0;
+   if (Integer.parseInt(list[0]) == 1){el1 = 0; noteCount++;} else el1=0;
+   if (Integer.parseInt(list[1]) == 1){el2 = 0; noteCount++;} else el2=0;
+   if (Integer.parseInt(list[2]) == 1){el3 = 0; noteCount++;}else el3=0;
 }
 
 
