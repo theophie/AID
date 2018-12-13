@@ -1,5 +1,4 @@
 void highScoreBoard() {
-  modeConstant = 1;
   String textfile="";  
    if (modeConstant ==1)textfile="scoresE.txt";
    if (modeConstant ==2)textfile="scoresM.txt";
