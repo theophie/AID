@@ -3,7 +3,6 @@
 void drawCircles() {
    String[] list = split(notesLine, ',');
 
-   println(list);
    if (Integer.parseInt(list[0]) == 1) {
      ellipse(200, el1, 50, 50); // Ellipse for snare
       el1 = el1 + ySpeed;
@@ -24,7 +23,7 @@ void drawCircles() {
 
 
 void game(int diff) {
-  
+  int highestScore = getHigherscore();
   background(bg);
   
   int points_rounded = round(points);
@@ -69,7 +68,49 @@ void game(int diff) {
     }
   }
   
+  if (hsCount==0){
+     highestScore = getHigherscore();
+      hsCount=1;
+  }
+  
+  if(points_rounded > highestScore){
+   text("Highscore: "+ points_rounded, 630, 40); // Score of player
+  }else text("Highscore: "+ highestScore, 630, 40);
+  
+   
+  
    if  (notesLineIndex == notes.length) { //end the game when you reach end of length array
      mode = 4;
    }
+}
+
+int getHigherscore(){
+    //load the strings from the file
+    //get the last string
+    //remove the string and leave the number only
+    //return the score
+     String textfile="";
+     StringList scores;
+   
+    if (modeConstant ==1)textfile="scoresE.txt";
+    if (modeConstant ==2)textfile="scoresM.txt";
+    if (modeConstant ==3)textfile="scoresH.txt";
+   
+    String[] currentScores = loadStrings(textfile);
+    scores = new StringList();
+     
+    if(currentScores.length>0){
+      println(currentScores.length);
+      for (int i = 0 ; i < currentScores.length; i++) {
+       scores.append(currentScores[i]); //add to a stringlist
+      }
+        println(scores);
+        String ls = scores.get(scores.size()-1);
+        String alphaOnly =  ls.substring(1);
+        println("alphaOnly", alphaOnly);
+        String highest = alphaOnly.substring(0, 4);
+         println("highest", highest);
+        return int(highest);
+    }else return 0;
+
 }
