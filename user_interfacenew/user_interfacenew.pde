@@ -79,11 +79,9 @@ void sendMsgInt(String addr, int v) {
 }
 // =========================== draw ==============================================
 void draw(){
-  
   //Mode 0: Intro
   if (mode == 0) { 
     introScreen(); 
-    //loopCount=0;
   }
   // Mode 1-3: Play the game
   else if (mode == 1) {
@@ -122,6 +120,7 @@ void draw(){
   // Mode 5: HighScore Board
   else if (mode == 5) {
     //end game
+        modeConstant =3;
     highScoreBoard();    
   } 
   // Error
@@ -249,17 +248,21 @@ void keyPressed() {
   
   if (mode == 4){
     if (key==ENTER || key==RETURN){
-    highscore(points_rounded);
-    mode= 5; //switching to highScoreBoard
+      highscore(points_rounded);
+      mode= 5; //switching to highScoreBoard
+      println(mode);
     }else{ 
-      if (username==null || username.length()<3){
+      if (key!=BACKSPACE){
+        if (username==null || username.length()<5){
         username +=key;
+      }
       }
     }
   }
   
    if (mode == 5){
-    if (key==ENTER || key==RETURN){
+     println(mode);
+    if (key==BACKSPACE){
     mode= 0; //switching to Intro
     }
   }
