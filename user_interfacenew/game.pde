@@ -23,7 +23,7 @@ void drawCircles() {
 
 
 void game(int diff) {
-  int highestScore = getHigherscore();
+ 
   background(bg);
   
   int points_rounded = round(points);
@@ -74,10 +74,9 @@ void game(int diff) {
   }
   
   if(points_rounded > highestScore){
+   fill(255);
    text("Highscore: "+ points_rounded, 630, 40); // Score of player
-  }else text("Highscore: "+ highestScore, 630, 40);
-  
-   
+  }else fill(255); text("Highscore: "+ highestScore, 630, 40);
   
    if  (notesLineIndex == notes.length) { //end the game when you reach end of length array
      mode = 4;
@@ -85,32 +84,29 @@ void game(int diff) {
 }
 
 int getHigherscore(){
-    //load the strings from the file
-    //get the last string
-    //remove the string and leave the number only
-    //return the score
-     String textfile="";
-     StringList scores;
+      String textfile="";  
+      StringList scoresList;
+      String hiScore;
+     if (modeConstant ==1)textfile="scoreE.xml";
+     if (modeConstant ==2)textfile="scoreN.xml";
+     if (modeConstant ==3)textfile="scoreH.xml";
    
-    if (modeConstant ==1)textfile="scoresE.txt";
-    if (modeConstant ==2)textfile="scoresM.txt";
-    if (modeConstant ==3)textfile="scoresH.txt";
-   
-    String[] currentScores = loadStrings(textfile);
-    scores = new StringList();
-     
-    if(currentScores.length>0){
-      println(currentScores.length);
-      for (int i = 0 ; i < currentScores.length; i++) {
-       scores.append(currentScores[i]); //add to a stringlist
+     xml = loadXML(textfile);
+     XML[] children = xml.getChildren("score");
+        scoresList = new StringList();
+        if (children.length ==0){
+          return 0;
+        }else{
+          for (int i = 0; i < children.length; i++) {      
+        String score = children[i].getString("score");       
+        scoresList.append(score);
       }
-        println(scores);
-        String ls = scores.get(scores.size()-1);
-        String alphaOnly =  ls.substring(1);
-        println("alphaOnly", alphaOnly);
-        String highest = alphaOnly.substring(0, 4);
-         println("highest", highest);
-        return int(highest);
-    }else return 0;
-
+      
+    scoresList.sort();
+    scoresList.reverse();
+    String[] sortedScore = scoresList.array();
+    hiScore = sortedScore[0];
+    return int(hiScore);
+        }
+      
 }
