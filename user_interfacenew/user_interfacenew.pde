@@ -113,12 +113,17 @@ void draw(){
     buzzers();
     notesHit();
   }
-  // Mode 2: Game over
+  // Mode 4: Game over
   else if (mode == 4) {
     //end game
     gameOver();  
     
   }  
+  // Mode 5: HighScore Board
+  else if (mode == 5) {
+    //end game
+    highScoreBoard();    
+  } 
   // Error
   else { 
     error(); 
@@ -245,7 +250,7 @@ void keyPressed() {
   if (mode == 4){
     if (key==ENTER || key==RETURN){
     highscore(points_rounded);
-    mode= 0; //switching to intro
+    mode= 5; //switching to highScoreBoard
     }else{ 
       if (username==null || username.length()<3){
         username +=key;
@@ -253,6 +258,11 @@ void keyPressed() {
     }
   }
   
+   if (mode == 5){
+    if (key==ENTER || key==RETURN){
+    mode= 0; //switching to Intro
+    }
+  }
   //game
   if (mode==1 || mode==2 || mode==3){
     username="";

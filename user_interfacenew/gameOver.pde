@@ -21,6 +21,7 @@ void gameOver() {
   text("Enter your name:"+ username , 350, 650);
 
 }
+
 // =========================== Highscores =================================================
 
 void highscore(int us){
