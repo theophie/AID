@@ -1,11 +1,22 @@
 void highScoreBoard() {
   String textfile="";  
-   if (modeConstant ==1)textfile="scoresE.txt";
-   if (modeConstant ==2)textfile="scoresM.txt";
-   if (modeConstant ==3)textfile="scoresH.txt";
-   println("modeConstant",modeConstant);
-  String[] currentScores = loadStrings(textfile);
-  currentScores = reverse(currentScores);
+  StringList scoresList;
+   
+   if (modeConstant ==1)textfile="scoreE.xml";
+   if (modeConstant ==2)textfile="scoreN.xml";
+   if (modeConstant ==3)textfile="scoreH.xml";
+  
+   xml = loadXML(textfile);
+   XML[] children = xml.getChildren("score");
+      scoresList = new StringList();
+    for (int i = 0; i < children.length; i++) {      
+      String score = children[i].getString("score");
+      String username = children[i].getString("username");
+      scoresList.append(score + " " + username);
+    }
+  scoresList.sort();
+  scoresList.reverse();
+  String[] sortedScore = scoresList.array();
  
   background(bg);
   fill(255, 80);
@@ -21,8 +32,9 @@ void highScoreBoard() {
 
   //for each value in the text increment the y by 60
   int y = 200;
-   for (int i = 0 ; i < currentScores.length; i++) {   
-     text(currentScores[i], 350, y); 
+   for (int i = 0 ; i < sortedScore.length; i++) {   
+     text(sortedScore[i], 350, y); 
        y = y +60;
+       if (i==5)return;
    }
 }
