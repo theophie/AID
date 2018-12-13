@@ -20,11 +20,13 @@ String username="";
   
 int[] notesOk = {-1,-1,-1}; //making an array, -1 since they are not active in the beginning
 int[] notesMissed = {-1,-1,-1};
+int hsCount =0;
 
 //Copied from airDrumProcessing
 import processing.serial.*;
 import oscP5.*;
 import netP5.*;
+XML xml;
 OscP5 oscP5;
 NetAddress myRemoteLocation;
 String notes[];
@@ -51,7 +53,6 @@ void setup(){
   bg.resize(700, 700);  
   mode = 0;
   
-
   //load Images
   drumkit = loadImage("drumkit.png");
   snare = loadImage("snare.png");
@@ -82,6 +83,7 @@ void draw(){
   //Mode 0: Intro
   if (mode == 0) { 
     introScreen(); 
+     hsCount =0;
   }
   // Mode 1-3: Play the game
   else if (mode == 1) {
@@ -92,6 +94,7 @@ void draw(){
     game(85); 
     buzzers();
     notesHit();
+    modeConstant =1;
   }
    else if (mode == 2) {
      //medium difficulty
@@ -101,6 +104,7 @@ void draw(){
     game(65); 
     buzzers();
     notesHit();
+     modeConstant =2;
   }
    else if (mode == 3) {
      //difficult game
@@ -110,6 +114,7 @@ void draw(){
     game(50);
     buzzers();
     notesHit();
+     modeConstant =3;
   }
   // Mode 4: Game over
   else if (mode == 4) {
@@ -119,8 +124,7 @@ void draw(){
   }  
   // Mode 5: HighScore Board
   else if (mode == 5) {
-    //end game
-        modeConstant =3;
+    //end game       
     highScoreBoard();    
   } 
   // Error
@@ -236,7 +240,7 @@ void keyPressed() {
   //allow the game mode to change in the correct screen
   if (mode == 0){
        if (key=='1'){
-         modeConstant =1;
+        modeConstant =1;
         mode = 1; //easy mode        
       }else if( key=='2'){
         modeConstant =2;
