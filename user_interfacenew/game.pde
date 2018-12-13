@@ -76,7 +76,7 @@ void game(int diff) {
   if(points_rounded > highestScore){
    fill(255);
    text("Highscore: "+ points_rounded, 630, 40); // Score of player
-  }else fill(255); text("Highscore: "+ highestScore, 630, 40);
+  }else text("Highscore: "+ highestScore, 630, 40);
   
    if  (notesLineIndex == notes.length) { //end the game when you reach end of length array
      mode = 4;
